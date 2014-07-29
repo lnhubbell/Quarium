@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title> Floating bubbles For Your Website </title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        function bubble(objName,x,y,z,content) {
+            this.name = objName;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.count = Math.random(40);
+            this.remX = x;
+            this.remY = y;
+            this.moveUp = moveUp;
+            this.loopID = objName+""+x+""+y+""+z;
+            // makeDiv(objName,x,y,'<img src="bubble4.png"><h2><span>Test Test tes test tes</span></h2>');
+            makeDiv(objName,x,y,content);
+        }
+        // have to do it like this so it wont look bad in FireFox
+        function startBubbles(nmCount, totalCount) {
+
+            if (nmCount<5) {
+            //for (var nmCount = 0; nmCount<13; nmCount++) {
+
+                var bubbleNm = "bubble"+nmCount+totalCount;
+                var ranX = randomizeX();
+                var ranY = randomizeY();
+                var ranZ = randomize(3);
+                // var content = '<img src="static/images/bubble4.png"><h2><span>{{the_text}}</span></h2>';
+                // xmlhttp = new XMLHttpRequest();
+                // xmlhttp.open("GET","/",true);
+                // xmlhttp.send();
+                // var content = xmlhttp.responseText;
+                var dcontent;
+
+                $.get( "/test", function( data ) {
+                    dcontent = "<h2>"+data+"<a href='http://www.w3schools.com/' target='_blank'>Visit W3Schools</a> </h2>";
+                    eval(bubbleNm+' = new bubble("'+bubbleNm+'",ranX,ranY,ranZ,dcontent);  ');
+                    eval(bubbleNm+'.loopID = setInterval("'+bubbleNm+'.moveUp();",20);  ');
+                    // alert( "Load was performed." + data );
+                });
+
+                // eval(bubbleNm+' = new bubble("'+bubbleNm+'",ranX,ranY,ranZ,dcontent);  ');
+                // // bubbleNm = new bubble(bubbleNm,ranX,ranY,ranZ);
+                // //bubbleNm = setInterval(bubbleNm+".moveUp();",40);
+                // eval(bubbleNm+'.loopID = setInterval("'+bubbleNm+'.moveUp();",20);  ');
+
+            //}
+
+                nmCount++;
+                setTimeout('startBubbles('+nmCount+','+totalCount+');',2500);
+            }
+        }
+        </script>
+    </head>
+    <body bgcolor="549BD2" onLoad="hideLoadbar();">
+
+<!--         <iframe width="100%" height="100%" src="http://www.youtube.com/embed/VIrBecB746c" frameborder="0" allowfullscreen></iframe> -->
+        <iframe width="100%" height="100%" src="http://www.youtube.com/embed/VIrBecB746c?rel=0&autoplay=1&loop=1&playlist=VIrBecB746c" frameborder="0"></iframe>
+        <table width="100%" height="100%"><tr><td align="center" valign="center" width="100%" height="100%">
+        <img src="{{ url_for('static', filename='images/bubble4.png') }}">
+        <p>{{the_text}}</p>
+        <div id="alt">
+
+                <script language="javascript" src="{{ url_for('static', filename='core.js') }}"></script>
+
+                <script language="javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+
+        </div>  <!-- alt Div End //-->
+
+        </td></tr></table> <!-- center all table End //-->
+
+    </body>
+</html>
