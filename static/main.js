@@ -9,6 +9,7 @@ function moveUp() {
     if (this.y<-20) {
         clearInterval(this.loopID);
         this.y = 99999;
+        // 'body'.removeChild(this.name);
         totalCount += 1;
         setTimeout('startBubbles(4, '+totalCount+');',300);
     }

@@ -2,6 +2,7 @@ import os
 import datetime
 import sys
 import cPickle
+import json
 
 from flask import Flask
 from flask import g
@@ -37,7 +38,17 @@ def contact():
     f = open('tweet_pickle','rb')
     tweet_list = cPickle.load(f)
     f.close()
-
+    tweet_list = tweet_list.split()
+    json_pack = {}
+    json_pack['tweet'] = []
+    for word in tweet_list:
+        if 'http' in word:
+            json_pack['thelink'] = word
+        else:
+            json_pack['tweet'].append(word)
+    json_pack['tweet'] = " ".join(json_pack['tweet'])
+    print json_pack['tweet']
+    encoded = json.JSONEncoder().encode(json_pack)
     # name = request.args.get('name', 'Name error')
     # subject = request.args.get('subject', 'Subject Error')
     # email = request.args.get('email', 'Email Error')
@@ -51,7 +62,7 @@ def contact():
     # mail.send(msg)
     # return render_template('message_sent.html', name=name)
 
-    return tweet_list
+    return encoded
 
 
 

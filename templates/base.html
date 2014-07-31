@@ -5,6 +5,7 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type="text/javascript">
+        // $("body").css("overflow", "hidden");
         function bubble(objName,x,y,z,content) {
             this.name = objName;
             this.x = x;
@@ -35,8 +36,14 @@
                 // var content = xmlhttp.responseText;
                 var dcontent;
 
-                $.get( "/test", function( data ) {
-                    dcontent = "<h2>"+data+"<a href='http://www.w3schools.com/' target='_blank'>Visit W3Schools</a> </h2>";
+                $.getJSON( "/test", function( data ) {
+                    if (data.thelink) {
+                        dcontent = "<h2>"+data.tweet+" <a href="+data.thelink+" target='_blank'>"+data.thelink+"</a> </h2>";
+                    } else {
+                        dcontent = "<h2>"+data.tweet+"</h2>"
+                    }
+
+
                     eval(bubbleNm+' = new bubble("'+bubbleNm+'",ranX,ranY,ranZ,dcontent);  ');
                     eval(bubbleNm+'.loopID = setInterval("'+bubbleNm+'.moveUp();",20);  ');
                     // alert( "Load was performed." + data );
