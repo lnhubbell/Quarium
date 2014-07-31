@@ -3,6 +3,7 @@ import datetime
 import sys
 import cPickle
 import json
+import zmq
 
 from flask import Flask
 from flask import g
@@ -35,13 +36,11 @@ def show_entries():
 
 @app.route('/test', methods=['GET'])
 def contact():
-    f = open('tweet_pickle','rb')
-    tweet_list = cPickle.load(f)
-    f.close()
-    tweet_list = tweet_list.split()
+    string = socket.recv_string()
+    tweet_list = string.split()
     json_pack = {}
     json_pack['tweet'] = []
-    for word in tweet_list:
+    for word in tweet_list[1:]:
         if 'http' in word:
             json_pack['thelink'] = word
         else:
@@ -67,4 +66,8 @@ def contact():
 
 
 if __name__ == '__main__':
+    context = zmq.Context()
+    socket = context.socket(zmq.SUB)
+    socket.connect("tcp://localhost:5556")
+    socket.setsockopt_string(zmq.SUBSCRIBE, u"10")
     app.run(debug=True)
