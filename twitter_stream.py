@@ -1,6 +1,7 @@
 import tweepy
 import json
 import cPickle
+import zmq
 
 # Authentication details. To  obtain these visit dev.twitter.com
 consumer_key = 'PUpKEozSrCV5x06mc1uNDMgMN'
@@ -23,10 +24,12 @@ class StdOutListener(tweepy.StreamListener):
         # f.write(decoded['text'].encode('ascii', 'ignore'))
         # f.write('\n+++++++++++++')
         # f.close()
-        tweet_list = decoded['text'].encode('ascii', 'ignore')
-        f = open('tweet_pickle', 'wb')
-        cPickle.dump(tweet_list,f)
-        f.close()
+        socket.send_string(u"%i %s" % (10, unicode(decoded['text'].encode('ascii', 'ignore'))))
+        print "Tweet Sent"
+        # tweet_list = decoded['text'].encode('ascii', 'ignore')
+        # f = open('tweet_pickle', 'wb')
+        # cPickle.dump(tweet_list,f)
+        # f.close()
         return True
 
     def on_error(self, status):
@@ -37,7 +40,11 @@ if __name__ == '__main__':
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
 
-    print "Showing all new tweets for #programming:"
+    context = zmq.Context()
+    socket = context.socket(zmq.PUB)
+    socket.bind("tcp://*:5556")
+
+    print "Beginning Stream:"
 
     # There are different kinds of streams: public stream, user stream, multi-user streams
     # In this example follow #programming tag
