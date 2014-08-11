@@ -99,5 +99,7 @@ if __name__ == '__main__':
     # try:
     # except zmq.error.ZMQError:
     #     print "Already connected..."
-    app.run()
+    from wsgiref.simple_server import make_server
+    srv = make_server('localhost', 8000, app)
+    srv.serve_forever()
     # app.run()
