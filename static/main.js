@@ -55,3 +55,8 @@ function showMe (box) {
 
 
 }
+
+$('.about_button').click(function(e){
+    e.preventDefault(); //to prevent standard click event
+    $('.about').toggle();
+});
