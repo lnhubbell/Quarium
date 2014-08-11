@@ -1,7 +1,6 @@
 <html>
     <head>
-        <title> Floating bubbles For Your Website </title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+        <title> The #Tweetquarium </title>
         <link rel="shortcut icon" href="/favicon.ico" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type="text/javascript">
@@ -36,16 +35,16 @@
                 // var content = xmlhttp.responseText;
                 var dcontent;
 
-                $.getJSON( "/test", function( data ) {
+                $.getJSON( "/gettweet", function( data ) {
                     if (data.thelink) {
-                        dcontent = "<h2>"+data.tweet+" <a href="+data.thelink+" target='_blank'>"+data.thelink+"</a> </h2>";
+                        dcontent = "<div class='tweet'><h2>"+data.tweet+" <a href="+data.thelink+" target='_blank'>"+data.thelink+"</a> </h2></div>";
                     } else {
-                        dcontent = "<h2>"+data.tweet+"</h2>"
+                        dcontent = "<div class='tweet'><h2>"+data.tweet+"</h2></div>"
                     }
 
 
                     eval(bubbleNm+' = new bubble("'+bubbleNm+'",ranX,ranY,ranZ,dcontent);  ');
-                    eval(bubbleNm+'.loopID = setInterval("'+bubbleNm+'.moveUp();",20);  ');
+                    eval(bubbleNm+'.loopID = setInterval("'+bubbleNm+'.moveUp();",80);  ');
                     // alert( "Load was performed." + data );
                 });
 
@@ -63,21 +62,83 @@
         </script>
     </head>
     <body bgcolor="549BD2" onLoad="hideLoadbar();">
+        <nav class="navbar navbar-inverse" role="navigation">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Tweetquarium</a>
+            </div>
 
-<!--         <iframe width="100%" height="100%" src="http://www.youtube.com/embed/VIrBecB746c" frameborder="0" allowfullscreen></iframe> -->
-        <iframe width="100%" height="100%" src="http://www.youtube.com/embed/VIrBecB746c?rel=0&autoplay=1&loop=1&playlist=VIrBecB746c" frameborder="0"></iframe>
-        <table width="100%" height="100%"><tr><td align="center" valign="center" width="100%" height="100%">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Styles <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/">Quarium</a></li>
+                    <li><a href="Space">Space</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <form class="navbar-form navbar-left" role="search" action='/changefilter' method='POST'>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="I want to watch..." name="thefilter">
+                </div>
+                <button type="submit" class="btn btn-default">Bubble!</button>
+              </form>
+              <ul class="nav navbar-nav navbar-right">
+                <!-- <li><a href="#">About</a></li> -->
+                <li><button class="btn btn-default navbar-btn about_button">About</button></li>
+                <li>.       .      .</li>
+                <li><a href="https://twitter.com/share" class="navbar-btn twitter-share-button" data-size="large" data-related="NathanHubbell1">Tweet</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        {% if style == 'quarium' %}
+        <div id='div1'><iframe width="100%" height="100%" src="http://www.youtube.com/embed/VIrBecB746c?rel=0&autoplay=1&loop=1&playlist=VIrBecB746c" frameborder="0"></iframe></div>
+        {% elif style == 'space' %}
+        <iframe width="100%" height="100%" src="//www.youtube.com/embed/5vOU6-1yNZs?rel=0&autoplay=1&loop=1&playlist=5vOU6-1yNZs" frameborder="0" allowfullscreen></iframe>
+        {% endif %}
+
+<!--         <table width="100%" height="100%"><tr><td align="center" valign="center" width="100%" height="100%">
+        <form action='/changefilter' method='POST'>
+            I want to watch: <input type="text" name="thefilter"><br>
+        </form>
+        <input type="checkbox" name="c1" onclick="showMe('div1')">Show Space Tweets
         <img src="{{ url_for('static', filename='images/bubble4.png') }}">
-        <p>{{the_text}}</p>
+        <p>{{the_text}}</p> -->
         <div id="alt">
+
+
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
                 <script language="javascript" src="{{ url_for('static', filename='core.js') }}"></script>
 
                 <script language="javascript" src="{{ url_for('static', filename='main.js') }}"></script>
 
+                <!-- Latest compiled and minified CSS -->
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+                <!-- Optional theme -->
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+                <!-- Latest compiled and minified JavaScript -->
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+                <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
         </div>  <!-- alt Div End //-->
 
         </td></tr></table> <!-- center all table End //-->
-
+    <div class="about">
+        <h2>Tweetquarium</h2>
+        <p>The tweetquarium is a place for tweets to live, a natural environment for them. The lives of these strange creatures are short, but beautiful. <br>
+    </div>
     </body>
 </html>
